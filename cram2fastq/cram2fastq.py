@@ -84,7 +84,6 @@ def print_imeta(samp):
 
 def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
                      path):
-    os.chdir(path)
     fh = open('bsubjob.sh', 'w')
     headers = [
         '#!/bin/bash\n',
@@ -100,15 +99,17 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
     ]
     if bulk:
         job_script = [
-            'bash imeta.sh\n'
-            'parallel cramfastq_bulk.sh ::: *.cram\n'
-            'rename_fastq.py\n'
+            'cd {OUTPATH}\n'.format(OUTPATH=path),
+            'bash imeta.sh\n',
+            'parallel cramfastq_bulk.sh ::: *.cram\n',
+            'rename_fastq.py\n',
         ]
     else:
         job_script = [
-            'bash imeta.sh\n'
-            'parallel cramfastq.sh ::: *.cram\n'
-            'rename_fastq.py\n'
+            'cd {OUTPATH}\n'.format(OUTPATH=path),
+            'bash imeta.sh\n',
+            'parallel cramfastq.sh ::: *.cram\n',
+            'rename_fastq.py\n',
         ]
     new_file_contents = ''.join(headers + job_script)
     fh.write(new_file_contents)
@@ -134,6 +135,7 @@ def main():
             if not os.path.exists(cram_path):
                 os.makedirs(cram_path)
             os.chdir(cram_path)
+            cwd = os.getcwd()
             # try:
             #   get_sanger_crams()
             # except:  # if file already exists, iget will fail.
@@ -151,7 +153,7 @@ def main():
                                  MEMORY=args.mem,
                                  NCPU=str(args.ncpu),
                                  bulk=args.bulk,
-                                 path=cram_path)
+                                 path=cwd)
                 if (args.dryrun):
                     print('Dry run - bsub job script:\r')
                     with open('bsubjob.sh', 'r') as f:
