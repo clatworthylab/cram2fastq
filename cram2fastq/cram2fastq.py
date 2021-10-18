@@ -148,7 +148,8 @@ def main():
                                  QUEUE=args.queue,
                                  LOGPATH=logpath,
                                  MEMORY=args.mem,
-                                 NCPU=str(args.ncpu))
+                                 NCPU=str(args.ncpu),
+                                 bulk=args.bulk)
                 if (args.dryrun):
                     print('Dry run bsub command:\r')
                     fh = open('bsubjob.sh', 'r')
