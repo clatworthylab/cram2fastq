@@ -11,7 +11,7 @@ setup(
     version= '0.0.1',
     author="zktuong",
     author_email="kt16@sanger.ac.uk",
-    description="Download and convert cram-to-fastq.",
+    description="Download and convert cram-to-fastq from irods.",
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/clatworthylab/cram2fastq/",
