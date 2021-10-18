@@ -21,17 +21,13 @@ setup(name="cram2fastq",
           'cram2fastq': [
               'cram2fastq/bin/cramfastq.sh',
               'cram2fastq/bin/cramfastq_bulk.sh',
-              'cram2fastq/bin/cramfastq_par.sh',
-              'cram2fastq/bin/cramfastq_bulk_par.sh',
-              'cram2fastq/bin/cram2fastq.py'
+              'cram2fastq/bin/cram2fastq.py',
           ]
       },
       data_files=[('bin', [
           'cram2fastq/bin/cramfastq.sh',
           'cram2fastq/bin/cramfastq_bulk.sh',
           'cram2fastq/bin/cram2fastq.py',
-          'cram2fastq/bin/cramfastq_par.sh',
-          'cram2fastq/bin/cramfastq_bulk_par.sh',
       ])],
       include_package_data=True,
       classifiers=[
