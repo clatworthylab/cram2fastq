@@ -91,7 +91,6 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
         '#BSUB -J {JOB}\r'.format(JOB=JOBNAME),
         '#BSUB -q {QUEUE}\r'.format(QUEUE=QUEUE),
         '#BSUB -o {LOGPATH}/%J.out\r'.format(LOGPATH=LOGPATH),
-        '#BSUB -eo {LOGPATH}/%J.err\r'.format(LOGPATH=LOGPATH),
         '#BSUB -n {NCPU}\r'.format(NCPU=str(NCPU)),
         '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\r'
         .format(MEMORY=MEMORY),
