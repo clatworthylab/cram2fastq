@@ -111,9 +111,9 @@ def main():
             # except:  # if file already exists, iget will fail.
             #   pass
             if args.bulk:
-                cram2fastq = 'bash imeta.s; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py'
             else:
-                cram2fastq = 'bash imeta.s; parallel cramfastq.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py'
             if args.bsub:
                 SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
                     MEMORY=args.mem)
