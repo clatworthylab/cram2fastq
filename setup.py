@@ -22,12 +22,14 @@ setup(name="cram2fastq",
               'cram2fastq/cramfastq.sh',
               'cram2fastq/cramfastq_bulk.sh',
               'cram2fastq/cram2fastq.py',
+              'cram2fastq/rename_fastq.py',
           ]
       },
       data_files=[('bin', [
           'cram2fastq/cramfastq.sh',
           'cram2fastq/cramfastq_bulk.sh',
           'cram2fastq/cram2fastq.py',
+          'cram2fastq/rename_fastq.py',
       ])],
       include_package_data=True,
       classifiers=[
