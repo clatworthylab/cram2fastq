@@ -82,8 +82,8 @@ def print_imeta(samp):
     os.system('sed "/.fastq.gz/d" -i imeta.sh')
 
 
-def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
-                     path):
+def create_jobscript(SAMPLE, GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY,
+                     NCPU, bulk, path):
     fh = open('bsubjob.sh', 'w')
     headers = [
         '#!/bin/bash\n',
@@ -91,7 +91,8 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
         '#BSUB -P {PRORITY}\n'.format(PRORITY=PRIORITY),
         '#BSUB -J {JOB}\n'.format(JOB=JOBNAME),
         '#BSUB -q {QUEUE}\n'.format(QUEUE=QUEUE),
-        '#BSUB -o {LOGPATH}/%J.out\n'.format(LOGPATH=LOGPATH),
+        '#BSUB -o {LOGPATH}/{SAMPLE}_%J.out\n'.format(LOGPATH=LOGPATH,
+                                                      SAMPLE=SAMPLE),
         '#BSUB -n {NCPU}\n'.format(NCPU=str(NCPU)),
         '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\n'
         .format(MEMORY=MEMORY),
@@ -103,6 +104,8 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
             'bash imeta.sh\n',
             'parallel cramfastq_bulk.sh ::: *.cram\n',
             'rename_fastq.py\n',
+            'rm imeta.sh\n',
+            'rm bsubjob.sh\n',
         ]
     else:
         job_script = [
@@ -110,6 +113,8 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
             'bash imeta.sh\n',
             'parallel cramfastq.sh ::: *.cram\n',
             'rename_fastq.py\n',
+            'rm imeta.sh\n',
+            'rm bsubjob.sh\n',
         ]
     new_file_contents = ''.join(headers + job_script)
     fh.write(new_file_contents)
@@ -141,11 +146,12 @@ def main():
             # except:  # if file already exists, iget will fail.
             #   pass
             if args.bulk:
-                cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             else:
-                cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             if args.bsub:
-                create_jobscript(GROUP=GROUP,
+                create_jobscript(SAMPLE=SAMPLE,
+                                 GROUP=GROUP,
                                  PRIORITY=PRIORITY,
                                  JOB=JOBNAME,
                                  QUEUE=args.queue,
@@ -161,8 +167,6 @@ def main():
                 else:
                     print_imeta(SAMPLE)
                     os.system('bsub < bsubjob.sh')
-                    # os.system('rm imeta.sh')
-                    # os.system('rm bsubjob.sh')
             else:
                 if (args.dryrun):
                     print('Dry run - command:\r')
