@@ -92,7 +92,7 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
         '#BSUB -q {QUEUE}\r'.format(QUEUE=QUEUE),
         '#BSUB -oo {LOGPATH}/%J.out\r'.format(LOGPATH=LOGPATH),
         '#BSUB -eo {LOGPATH}/%J.err\r'.format(LOGPATH=LOGPATH),
-        '#BSUB -n {NCPU}'.format(NCPU=str(NCPU)),
+        '#BSUB -n {NCPU}\r'.format(NCPU=str(NCPU)),
         '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\r'
         .format(MEMORY=MEMORY),
         '### ~~~ job script below ~~~ ###\n',
@@ -152,12 +152,13 @@ def main():
                                  bulk=args.bulk)
                 if (args.dryrun):
                     print('Dry run bsub command:\r')
-                    fh = open('bsubjob.sh', 'r')
-                    for f in fh.readlines():
-                        print(f)
+                    with open('bsubjob.sh', 'r') as f:
+                        print f.read()
                 else:
                     print_imeta(SAMPLE)
                     os.system('bsub < bsubjob.sh')
+                    os.system('rm imeta.sh')
+                    os.system('rm bsubjob.sh')
             else:
                 if (args.dryrun):
                     print('Dry run command:\r')
@@ -165,7 +166,7 @@ def main():
                 else:
                     print_imeta(SAMPLE)
                     os.system(cram2fastq)
-                os.system('rm imeta.sh')
+                    os.system('rm imeta.sh')
         os.chdir(wd)
 
     print('\r')
