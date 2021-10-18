@@ -157,7 +157,7 @@ def main():
                     print_imeta(SAMPLE)
                     os.system('bsub < bsubjob.sh')
                     os.system('rm imeta.sh')
-                    os.system('rm bsubjob.sh')
+                    # os.system('rm bsubjob.sh')
             else:
                 if (args.dryrun):
                     print('Dry run - command:\r')
