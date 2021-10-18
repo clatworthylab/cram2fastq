@@ -6,16 +6,14 @@ A python script to retrieve and convert crams from irods to fastq files.
 pip install cram2fastq
 ```
 
-Before using the tool for the first time, check that:
+Before using the tool, check that:
 
-1) samtools is available on your `$PATH`:
-e.g.
+1) samtools is available on your `$PATH`. If not:
 ```bash
 export PATH=/nfs/team297/kt16/Softwares/samtools-1.11/bin:$PATH
 ```
 
-2) `REF_PATH` is set as well:
-e.g.
+2) `REF_PATH` is set as well. If not:
 ```bash
 export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustre/scratch118/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http:://sf2-farm-srv1.internal.sanger.ac.uk::8000/%s
 ```
@@ -56,6 +54,8 @@ cram2fastq.py --meta sampleids.txt --study test --outpath /path/to/folder --bulk
 
 `sampleids.txt` is simply a single column `.txt` or `.csv` file with the sanger sample ids (no header).
 The IDs should correspond to `SANGER SAMPLE ID` column in the manifest.
+
+For example:
 ```
 SangerSampleID00000001
 SangerSampleID00000002
