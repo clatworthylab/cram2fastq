@@ -85,14 +85,14 @@ def print_imeta(samp):
 def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
     fh = open('bsubjob.sh', 'w')
     headers = [
-        '#!/bin/bash\r',
-        '#BSUB -G {GROUP}\r'.format(GROUP=GROUP),
-        '#BSUB -P {PRORITY}\r'.format(PRORITY=PRIORITY),
-        '#BSUB -J {JOB}\r'.format(JOB=JOBNAME),
-        '#BSUB -q {QUEUE}\r'.format(QUEUE=QUEUE),
-        '#BSUB -o {LOGPATH}/%J.out\r'.format(LOGPATH=LOGPATH),
-        '#BSUB -n {NCPU}\r'.format(NCPU=str(NCPU)),
-        '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\r'
+        '#!/bin/bash\n',
+        '#BSUB -G {GROUP}\n'.format(GROUP=GROUP),
+        '#BSUB -P {PRORITY}\n'.format(PRORITY=PRIORITY),
+        '#BSUB -J {JOB}\n'.format(JOB=JOBNAME),
+        '#BSUB -q {QUEUE}\n'.format(QUEUE=QUEUE),
+        '#BSUB -o {LOGPATH}/%J.out\n'.format(LOGPATH=LOGPATH),
+        '#BSUB -n {NCPU}\n'.format(NCPU=str(NCPU)),
+        '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\n'
         .format(MEMORY=MEMORY),
         '### ~~~ job script below ~~~ ###\n',
     ]
