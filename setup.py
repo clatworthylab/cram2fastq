@@ -18,8 +18,8 @@ setup(
     packages=find_packages(),
     setup_requires=["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.0"],
     install_requires=requirements,
-    package_data={'cram2fastq': ['bin/cramfastq.sh', 'bin/cramfastq_bulk.sh']},
-    data_files=[('cram2fastq', ['bin/cramfastq.sh', 'bin/cramfastq_bulk.sh'])],
+    package_data={'bin': ['bin/cramfastq.sh', 'bin/cramfastq_bulk.sh', 'bin/cram2fastq.py']},
+    data_files=[('bin', ['bin/cramfastq.sh', 'bin/cramfastq_bulk.sh', 'bin/cram2fastq.py'])],
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3.7",
