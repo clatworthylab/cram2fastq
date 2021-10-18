@@ -5,6 +5,8 @@ import re
 
 import pandas as pd
 
+from subprocess import run
+
 JOBNAME = 'cram2fastq'
 PROJECT = 'team205'
 GROUP = 'teichlab'
@@ -104,36 +106,53 @@ def main():
                 os.makedirs(cram_path)
             os.chdir(cram_path)
             print_imeta(SAMPLE)
-            SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
-                MEMORY=args.mem)
-            # SPAN = ''
-            bsub = (
-                'bsub -P {PROJECT} -G {GROUP} -q {QUEUE}'.format(
-                    PROJECT=PROJECT, GROUP=GROUP, QUEUE=args.queue) +
-                ' -o log/%J.out -e log/%J.err -J {JOB} '.format(JOB=JOBNAME) +
-                '-n ' + str(args.ncpu) + " " + SPAN + " ")
             try:
                 get_sanger_crams()
             except:  # if file already exists, iget will fail.
                 pass
             if args.bulk:
-                cram2fastq = "parallel cramfastq_bulk.sh ::: {CRAM_PATH}/*.cram;".format(
-                    CRAM_PATH=cram_path)
+                cmd = [
+                    'parallel', '--citation', 'cramfastq_bulk.sh', ':::',
+                    '{CRAM_PATH}/*.cram'.format(CRAM_PATH=cram_path)
+                ]
             else:
-                cram2fastq = "parallel cramfastq.sh ::: {CRAM_PATH}/*.cram;".format(
-                    CRAM_PATH=cram_path)
+                cmd = [
+                    'parallel', '--citation', 'cramfastq.sh', ':::',
+                    '{CRAM_PATH}/*.cram'.format(CRAM_PATH=cram_path)
+                ]
             if args.bsub:
+                SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
+                    MEMORY=args.mem)
+                # SPAN = ''
+                # bsub = ('bsub -P {PROJECT} -G {GROUP} -q {QUEUE}'.format(
+                #     PROJECT=PROJECT, GROUP=GROUP, QUEUE=args.queue) +
+                #         ' -o log/%J.out -e log/%J.err -J {JOB} '.format(
+                #             JOB=JOBNAME) + '-n ' + str(args.ncpu) + " " +
+                #         SPAN + " ")
+
+                bsub = [
+                    'bsub', '-P', '{PROJECT}'.format(PROJECT=PROJECT), '-G',
+                    '{GROUP}'.format(GROUP=GROUP), '-q',
+                    '{QUEUE}'.format(QUEUE=args.queue), '-o', 'log/%J.out',
+                    '-e', 'log/%J.err', '-J', '{JOB}'.format(JOB=JOBNAME),
+                    '-n',
+                    str(args.ncpu), SPAN
+                ]
+
                 if (args.dryrun):
                     print('Dry run command:\r')
-                    print(bsub + cram2fastq + '\r')
+                    # print(bsub + cram2fastq + '\r')
                 else:
-                    os.system(bsub + cram2fastq)
+                    # os.system(bsub + cram2fastq)
+                    run(bsub + cmd)
             else:
                 if (args.dryrun):
                     print('Dry run command:\r')
-                    print(cram2fastq + '\r')
+                    # print(cram2fastq + '\r')
+                    print(cmd + '\r')
                 else:
-                    os.system(cram2fastq)
+                    run(cmd)
+                    # os.system(cram2fastq)
             os.system('rm imeta.sh')
 
     print('\r')
