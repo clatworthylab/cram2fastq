@@ -4,6 +4,8 @@ A python script to retrieve and convert crams from irods to fastq files.
 ## installation
 ```bash
 pip install cram2fastq
+# or
+pip install git+https://github.com/clatworthylab/cram2fastq.git
 ```
 
 Before using the tool, check that:
