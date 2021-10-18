@@ -82,7 +82,9 @@ def print_imeta(samp):
     os.system('sed "/.fastq.gz/d" -i imeta.sh')
 
 
-def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
+def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk,
+                     path):
+    os.chdir(path)
     fh = open('bsubjob.sh', 'w')
     headers = [
         '#!/bin/bash\n',
@@ -148,7 +150,8 @@ def main():
                                  LOGPATH=logpath,
                                  MEMORY=args.mem,
                                  NCPU=str(args.ncpu),
-                                 bulk=args.bulk)
+                                 bulk=args.bulk,
+                                 path=cram_path)
                 if (args.dryrun):
                     print('Dry run - bsub job script:\r')
                     with open('bsubjob.sh', 'r') as f:
