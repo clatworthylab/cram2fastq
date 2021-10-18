@@ -6,11 +6,8 @@ import re
 import pandas as pd
 
 JOBNAME = 'cram2fastq'
-MEMORY = '-R"select[mem>8000] rusage[mem=8000]" -M8000'
 PROJECT = 'team205'
 GROUP = 'teichlab'
-SPAN = '-n4 -R"span[hosts=1]"'
-# SPAN = ''
 
 
 def parse_args():
@@ -40,6 +37,14 @@ def parse_args():
                         type=str,
                         default='normal',
                         help=('bsub queue. Only works if --bsub is passed.'))
+    parser.add_argument('--ncpu',
+                        type=int,
+                        default=4,
+                        help=('bsub ncpu. Only works if --bsub is passed.'))
+    parser.add_argument('--mem',
+                        type=str,
+                        default='8000',
+                        help=('bsub memory. Only works if --bsub is passed.'))
     parser.add_argument(
         '--dryrun',
         action='store_true',
@@ -95,20 +100,23 @@ def main():
                 os.makedirs(cram_path)
             os.chdir(cram_path)
             print_imeta(SAMPLE)
+            SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
+                MEMORY=args.mem)
+            # SPAN = ''
             bsub = (
                 'bsub -P {PROJECT} -G {GROUP} -q {QUEUE}'.format(
                     PROJECT=PROJECT, GROUP=GROUP, QUEUE=args.queue) +
                 ' -o log/%J.out -e log/%J.err -J {JOB} '.format(JOB=JOBNAME) +
-                MEMORY + " " + SPAN + " ")
+                '-n ' + str(args.ncpu) + " " + SPAN + " ")
             try:
                 get_sanger_crams = 'bash imeta.sh;'
             except:  # if file already exists, iget will fail.
                 pass
             if args.bulk:
-                cram2fastq = 'parallel cramfastq_bulk.sh ::: {CRAM_PATH}/*.cram;'.format(
+                cram2fastq = "parallel cramfastq_bulk.sh ::: {CRAM_PATH}/*.cram;".format(
                     CRAM_PATH=cram_path)
             else:
-                cram2fastq = 'parallel cramfastq.sh ::: {CRAM_PATH}/*.cram;'.format(
+                cram2fastq = "parallel cramfastq.sh ::: {CRAM_PATH}/*.cram;".format(
                     CRAM_PATH=cram_path)
             if args.bsub:
                 if (args.dryrun):
@@ -134,7 +142,7 @@ def main():
     print('    --bulk = {BULK}\r'.format(BULK=args.bulk))
     print('    --bsub = {BSUB}\r'.format(BSUB=args.bsub))
     print('    --queue = {QUEUE}\r'.format(QUEUE=args.queue))
-    print('    --queue = {DRYRUN}\r'.format(DRYRUN=args.dryrun))
+    print('    --dryrun = {DRYRUN}\r'.format(DRYRUN=args.dryrun))
     print('--------------------------------------------------------------\r')
 
 
