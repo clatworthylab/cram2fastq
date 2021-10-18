@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 #discriminate between old and new CRAM files based on the presence of @SQ lines in the CRAM header
 if [[ `samtools view -H $1 | grep '@SQ' | wc -l` == 0 ]]
