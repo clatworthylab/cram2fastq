@@ -153,7 +153,7 @@ def main():
                 if (args.dryrun):
                     print('Dry run bsub command:\r')
                     with open('bsubjob.sh', 'r') as f:
-                        print f.read()
+                        print(f.read())
                 else:
                     print_imeta(SAMPLE)
                     os.system('bsub < bsubjob.sh')
