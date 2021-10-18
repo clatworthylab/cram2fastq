@@ -82,6 +82,10 @@ def print_imeta(samp):
     os.system('sed "/.fastq.gz/d" -i imeta.sh')
 
 
+def get_sanger_crams():
+    os.system('bash imeta.sh')
+
+
 def main():
     args = parse_args()
     if not os.path.exists('log'):
@@ -109,7 +113,7 @@ def main():
                 ' -o log/%J.out -e log/%J.err -J {JOB} '.format(JOB=JOBNAME) +
                 '-n ' + str(args.ncpu) + " " + SPAN + " ")
             try:
-                get_sanger_crams = 'bash imeta.sh;'
+                get_sanger_crams()
             except:  # if file already exists, iget will fail.
                 pass
             if args.bulk:
@@ -121,15 +125,15 @@ def main():
             if args.bsub:
                 if (args.dryrun):
                     print('Dry run command:\r')
-                    print(bsub + get_sanger_crams + cram2fastq + '\r')
+                    print(bsub + cram2fastq + '\r')
                 else:
-                    os.system(bsub + get_sanger_crams + cram2fastq)
+                    os.system(bsub + cram2fastq)
             else:
                 if (args.dryrun):
                     print('Dry run command:\r')
-                    print(get_sanger_crams + cram2fastq + '\r')
+                    print(cram2fastq + '\r')
                 else:
-                    os.system(get_sanger_crams + cram2fastq)
+                    os.system(cram2fastq)
             os.system('rm imeta.sh')
 
     print('\r')
