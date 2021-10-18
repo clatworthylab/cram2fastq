@@ -135,7 +135,7 @@ def main():
                 else:
                     os.system(cram2fastq)
                 os.system('rm imeta.sh')
-        os.chdir(cram_path)
+        os.chdir(wd)
 
     print('\r')
     print('--------------------------------------------------------------\r')
