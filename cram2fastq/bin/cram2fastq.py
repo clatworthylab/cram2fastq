@@ -141,7 +141,10 @@ def main():
     print('    --outpath = {OUTPATH}\r'.format(OUTPATH=args.outpath))
     print('    --bulk = {BULK}\r'.format(BULK=args.bulk))
     print('    --bsub = {BSUB}\r'.format(BSUB=args.bsub))
-    print('    --queue = {QUEUE}\r'.format(QUEUE=args.queue))
+    if args.bsub:
+        print('    --queue = {QUEUE}\r'.format(QUEUE=args.queue))
+        print('    --ncpu = {NCPU}\r'.format(NCPU=args.ncpu))
+        print('    --mem = {MEM}\r'.format(MEM=args.mem))
     print('    --dryrun = {DRYRUN}\r'.format(DRYRUN=args.dryrun))
     print('--------------------------------------------------------------\r')
 
