@@ -90,7 +90,7 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
         '#BSUB -P {PRORITY}\r'.format(PRORITY=PRIORITY),
         '#BSUB -J {JOB}\r'.format(JOB=JOBNAME),
         '#BSUB -q {QUEUE}\r'.format(QUEUE=QUEUE),
-        '#BSUB -oo {LOGPATH}/%J.out\r'.format(LOGPATH=LOGPATH),
+        '#BSUB -o {LOGPATH}/%J.out\r'.format(LOGPATH=LOGPATH),
         '#BSUB -eo {LOGPATH}/%J.err\r'.format(LOGPATH=LOGPATH),
         '#BSUB -n {NCPU}\r'.format(NCPU=str(NCPU)),
         '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\r'
@@ -151,7 +151,7 @@ def main():
                                  NCPU=str(args.ncpu),
                                  bulk=args.bulk)
                 if (args.dryrun):
-                    print('Dry run bsub command:\r')
+                    print('Dry run - bsub job script:\r')
                     with open('bsubjob.sh', 'r') as f:
                         print(f.read())
                 else:
@@ -161,7 +161,7 @@ def main():
                     os.system('rm bsubjob.sh')
             else:
                 if (args.dryrun):
-                    print('Dry run command:\r')
+                    print('Dry run - command:\r')
                     print(cram2fastq + '\r')
                 else:
                     print_imeta(SAMPLE)
