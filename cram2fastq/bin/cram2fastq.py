@@ -108,11 +108,10 @@ def main():
                 get_sanger_crams()
             except:  # if file already exists, iget will fail.
                 pass
-            files = ' '.join([cram_path + '/' + x for x in os.listdir(cram_path) if x.endswith('.cram')])
             if args.bulk:
-                cram2fastq = 'parallel cramfastq_bulk.sh ::: {FILES}'.format(FILES=files)
+                cram2fastq = 'parallel cramfastq_bulk.sh ::: *.cram'
             else:
-                cram2fastq = 'parallel cramfastq.sh ::: {FILES}'.format(FILES=files)
+                cram2fastq = 'parallel cramfastq.sh ::: *.cram'
             if args.bsub:
                 SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
                     MEMORY=args.mem)
