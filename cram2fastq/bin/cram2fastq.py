@@ -112,12 +112,12 @@ def main():
                 pass
             if args.bulk:
                 cmd = [
-                    'parallel', '--citation', 'cramfastq_bulk.sh', ':::',
+                    'parallel', 'cramfastq_bulk.sh', ':::',
                     '{CRAM_PATH}/*.cram'.format(CRAM_PATH=cram_path)
                 ]
             else:
                 cmd = [
-                    'parallel', '--citation', 'cramfastq.sh', ':::',
+                    'parallel', 'cramfastq.sh', ':::',
                     '{CRAM_PATH}/*.cram'.format(CRAM_PATH=cram_path)
                 ]
             if args.bsub:
