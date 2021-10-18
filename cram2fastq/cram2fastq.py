@@ -55,6 +55,7 @@ def parse_args():
 
 
 def print_imeta(samp):
+    """Create an imeta.sh file to download the files from irods."""
     os.system('printf "#!/bin/bash\\nset -e\\n\\\n" > imeta.sh')
     os.system(
         'imeta qu -z seq -d sample = {SAMPLE} and target = 1 and manual_qc = 1 >> imeta.sh'
@@ -84,6 +85,7 @@ def print_imeta(samp):
 
 def create_jobscript(SAMPLE, GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY,
                      NCPU, bulk, path):
+    """Create a bsub job script."""
     fh = open('bsubjob.sh', 'w')
     headers = [
         '#!/bin/bash\n',
@@ -141,10 +143,6 @@ def main():
                 os.makedirs(cram_path)
             os.chdir(cram_path)
             cwd = os.getcwd()
-            # try:
-            #   get_sanger_crams()
-            # except:  # if file already exists, iget will fail.
-            #   pass
             if args.bulk:
                 cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             else:
