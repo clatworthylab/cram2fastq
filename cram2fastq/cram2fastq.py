@@ -109,7 +109,7 @@ def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
             'parallel cramfastq.sh ::: *.cram\n'
             'rename_fastq.py\n'
         ]
-    new_file_contents = headers + job_script
+    new_file_contents = ''.join(headers + job_script)
     fh.write(new_file_contents)
     fh.close()
 
