@@ -82,8 +82,8 @@ def print_imeta(samp):
     os.system('sed "/.fastq.gz/d" -i imeta.sh')
 
 
-def get_sanger_crams():
-    os.system('bash imeta.sh')
+# def get_sanger_crams():
+#     os.system('bash imeta.sh')
 
 
 def main():
@@ -104,14 +104,14 @@ def main():
                 os.makedirs(cram_path)
             os.chdir(cram_path)
             print_imeta(SAMPLE)
-            try:
-                get_sanger_crams()
-            except:  # if file already exists, iget will fail.
-                pass
+            # try:
+            #   get_sanger_crams()
+            # except:  # if file already exists, iget will fail.
+            #   pass
             if args.bulk:
-                cram2fastq = 'parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh\nparallel cramfastq_bulk.sh ::: *.cram\nrename_fastq.py'
             else:
-                cram2fastq = 'parallel cramfastq.sh ::: *.cram; rename_fastq.py'
+                cram2fastq = 'bash imeta.sh\nparallel cramfastq.sh ::: *.cram\nrename_fastq.py'
             if args.bsub:
                 SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
                     MEMORY=args.mem)
