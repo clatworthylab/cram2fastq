@@ -6,7 +6,7 @@ import re
 import pandas as pd
 
 JOBNAME = 'cram2fastq'
-PROJECT = 'team205'
+PRIORITY = 'team205'
 GROUP = 'teichlab'
 
 
@@ -82,8 +82,36 @@ def print_imeta(samp):
     os.system('sed "/.fastq.gz/d" -i imeta.sh')
 
 
-# def get_sanger_crams():
-#     os.system('bash imeta.sh')
+def create_jobscript(GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY, NCPU, bulk):
+    fh = open('bsubjob.sh', 'w')
+    headers = [
+        '#!/bin/bash\r',
+        '#BSUB -G {GROUP}\r'.format(GROUP=GROUP),
+        '#BSUB -P {PRORITY}\r'.format(PRORITY=PRIORITY),
+        '#BSUB -J {JOB}\r'.format(JOB=JOBNAME),
+        '#BSUB -q {QUEUE}\r'.format(QUEUE=QUEUE),
+        '#BSUB -o {LOGPATH}/%J.out -e {LOGPATH}/%J.err\r'.format(
+            LOGPATH=LOGPATH),
+        '#BSUB -n {NCPU}'.format(NCPU=str(NCPU)),
+        '#BSUB -R "select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}\r'
+        .format(MEMORY=MEMORY),
+        '### ~~~ job script below ~~~ ###\n',
+    ]
+    if bulk:
+        job_script = [
+            'bash imeta.sh\n'
+            'parallel cramfastq_bulk.sh ::: *.cram\n'
+            'rename_fastq.py\n'
+        ]
+    else:
+        job_script = [
+            'bash imeta.sh\n'
+            'parallel cramfastq.sh ::: *.cram\n'
+            'rename_fastq.py\n'
+        ]
+    new_file_contents = headers + job_script
+    fh.write(new_file_contents)
+    fh.close()
 
 
 def main():
@@ -105,7 +133,6 @@ def main():
             if not os.path.exists(cram_path):
                 os.makedirs(cram_path)
             os.chdir(cram_path)
-            print_imeta(SAMPLE)
             # try:
             #   get_sanger_crams()
             # except:  # if file already exists, iget will fail.
@@ -115,24 +142,27 @@ def main():
             else:
                 cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py'
             if args.bsub:
-                SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
-                    MEMORY=args.mem)
-                # SPAN = ''
-                bsub = ('bsub -P {PROJECT} -G {GROUP} -q {QUEUE}'.format(
-                    PROJECT=PROJECT, GROUP=GROUP, QUEUE=args.queue) +
-                    ' -o {LOGPATH}/%J.out -e {LOGPATH}/%J.err -J {JOB} '.
-                    format(LOGPATH=logpath, JOB=JOBNAME) + '-n ' +
-                    str(args.ncpu) + " " + SPAN + " ")
+                create_jobscript(GROUP=GROUP,
+                                 PRIORITY=PRIORITY,
+                                 JOB=JOBNAME,
+                                 QUEUE=args.queue,
+                                 LOGPATH=logpath,
+                                 MEMORY=args.mem,
+                                 NCPU=str(args.ncpu))
                 if (args.dryrun):
-                    print('Dry run command:\r')
-                    print(bsub + cram2fastq + '\r')
+                    print('Dry run bsub command:\r')
+                    fh = open('bsubjob.sh', 'r')
+                    for f in fh.readlines():
+                        print(f)
                 else:
-                    os.system(bsub + cram2fastq)
+                    print_imeta(SAMPLE)
+                    os.system('bsub < bsubjob.sh')
             else:
                 if (args.dryrun):
                     print('Dry run command:\r')
                     print(cram2fastq + '\r')
                 else:
+                    print_imeta(SAMPLE)
                     os.system(cram2fastq)
                 os.system('rm imeta.sh')
         os.chdir(wd)
