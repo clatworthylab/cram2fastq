@@ -88,8 +88,10 @@ def print_imeta(samp):
 
 def main():
     args = parse_args()
-    if not os.path.exists('log'):
-        os.makedirs('log')
+    wd = os.getcwd()
+    logpath = wd + '/log'
+    if not os.path.exists(logpath):
+        os.makedirs(logpath)
 
     # read in the meta file
     if args.meta.endswith('.csv'):
@@ -118,9 +120,9 @@ def main():
                 # SPAN = ''
                 bsub = ('bsub -P {PROJECT} -G {GROUP} -q {QUEUE}'.format(
                     PROJECT=PROJECT, GROUP=GROUP, QUEUE=args.queue) +
-                    ' -o log/%J.out -e log/%J.err -J {JOB} '.format(
-                    JOB=JOBNAME) + '-n ' + str(args.ncpu) + " " +
-                    SPAN + " ")
+                    ' -o {LOGPATH}/%J.out -e {LOGPATH}/%J.err -J {JOB} '.
+                    format(LOGPATH=logpath, JOB=JOBNAME) + '-n ' +
+                    str(args.ncpu) + " " + SPAN + " ")
                 if (args.dryrun):
                     print('Dry run command:\r')
                     print(bsub + cram2fastq + '\r')
@@ -133,6 +135,7 @@ def main():
                 else:
                     os.system(cram2fastq)
                 os.system('rm imeta.sh')
+        os.chdir(cram_path)
 
     print('\r')
     print('--------------------------------------------------------------\r')
