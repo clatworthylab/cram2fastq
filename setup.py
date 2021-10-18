@@ -19,15 +19,15 @@ setup(name="cram2fastq",
       install_requires=requirements,
       package_data={
           'cram2fastq': [
-              'cram2fastq/bin/cramfastq.sh',
-              'cram2fastq/bin/cramfastq_bulk.sh',
-              'cram2fastq/bin/cram2fastq.py',
+              'cram2fastq/cramfastq.sh',
+              'cram2fastq/cramfastq_bulk.sh',
+              'cram2fastq/cram2fastq.py',
           ]
       },
       data_files=[('bin', [
-          'cram2fastq/bin/cramfastq.sh',
-          'cram2fastq/bin/cramfastq_bulk.sh',
-          'cram2fastq/bin/cram2fastq.py',
+          'cram2fastq/cramfastq.sh',
+          'cram2fastq/cramfastq_bulk.sh',
+          'cram2fastq/cram2fastq.py',
       ])],
       include_package_data=True,
       classifiers=[

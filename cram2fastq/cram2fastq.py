@@ -99,7 +99,7 @@ def main():
 
     for SAMPLE in meta[0]:
         if SAMPLE != "" or pd.notnull(SAMPLE):
-            cram_path = args.outpath + '/' + args.study + '/' + SAMPLE + '_crams'
+            cram_path = args.outpath + '/' + args.study + '/' + SAMPLE
             if not os.path.exists(cram_path):
                 os.makedirs(cram_path)
             os.chdir(cram_path)
@@ -109,9 +109,9 @@ def main():
             except:  # if file already exists, iget will fail.
                 pass
             if args.bulk:
-                cram2fastq = 'parallel cramfastq_bulk.sh ::: *.cram'
+                cram2fastq = 'parallel cramfastq_bulk.sh ::: *.cram; python rename_fastq.py'
             else:
-                cram2fastq = 'parallel cramfastq.sh ::: *.cram'
+                cram2fastq = 'parallel cramfastq.sh ::: *.cram; python rename_fastq.py'
             if args.bsub:
                 SPAN = '-R"select[mem>{MEMORY}] rusage[mem={MEMORY}] span[hosts=1]" -M{MEMORY}'.format(
                     MEMORY=args.mem)
@@ -132,7 +132,7 @@ def main():
                     print(cram2fastq + '\r')
                 else:
                     os.system(cram2fastq)
-            os.system('rm imeta.sh')
+                os.system('rm imeta.sh')
 
     print('\r')
     print('--------------------------------------------------------------\r')
