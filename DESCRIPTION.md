@@ -1,9 +1,9 @@
 # cram2fastq
 [![](https://img.shields.io/pypi/v/cram2fastq?logo=PyPI)](https://pypi.org/project/cram2fastq/)
 
-A python script to retrieve and convert crams from irods to fastq files.
+A python script to retrieve and convert crams from irods to fastq files. For internal use within the sanger HPC environment.
 
-## installation
+## Installation
 ```bash
 pip install cram2fastq
 # or
