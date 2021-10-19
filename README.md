@@ -3,7 +3,7 @@
 
 A python script to retrieve and convert crams from irods to fastq files. For internal use within the sanger HPC environment.
 
-## installation
+## Installation
 ```bash
 pip install cram2fastq
 # or
