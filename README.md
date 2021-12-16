@@ -40,6 +40,7 @@ optional arguments:
   --outpath OUTPATH  Path to the directory holding the converted files.
   --bulk             If passed, assume file is bulk data rather than 10x data.
   --bsub             If passed, submits as job to bsub.
+  --DNAP             If passed, treats samples as created using semiautomated pipeline from DNAP (i.e. same ID for GEX/TCR/BCR). Output will be separated as folders.
   --queue QUEUE      bsub queue. Only works if --bsub is passed.
   --ncpu NCPU        bsub ncpu. Only works if --bsub is passed.
   --mem MEM          bsub memory. Only works if --bsub is passed.
