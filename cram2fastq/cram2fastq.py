@@ -187,7 +187,7 @@ def print_imeta2(samp):
 def create_jobscript2(SAMPLE, GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY,
                       NCPU, bulk, path):
     """Create a bsub job script."""
-    folders = list(listdir_nohidden(path))
+    folders = [x for x in listdir_nohidden(path) if os.path.isdir(x)]
     for f in folders:
         fh = open(f + '/bsubjob.sh', 'w')
         headers = [
@@ -268,6 +268,10 @@ def main():
                         os.system(cram2fastq)
                         os.system('rm imeta.sh')
             else:
+                print_imeta2(SAMPLE)
+                folders = [
+                    x for x in listdir_nohidden(cwd) if os.path.isdir(x)
+                ]
                 if args.bsub:
                     create_jobscript2(SAMPLE=SAMPLE,
                                       GROUP=GROUP,
@@ -279,14 +283,13 @@ def main():
                                       NCPU=str(args.ncpu),
                                       bulk=args.bulk,
                                       path=cwd)
-                    folders = list(listdir_nohidden(cwd))
+
                     if (args.dryrun):
                         print('Dry run - bsub job script:\r')
                         for folder in folders:
                             with open(folder + '/bsubjob.sh', 'r') as f:
                                 print(f.read())
                     else:
-                        print_imeta2(SAMPLE)
                         for folder in folders:
                             os.system('bsub < ' + folder + '/bsubjob.sh')
                 else:
@@ -294,7 +297,6 @@ def main():
                         print('Dry run - command:\r')
                         print(cram2fastq + '\r')
                     else:
-                        print_imeta2(SAMPLE)
                         for folder in folders:
                             os.chdir(folder)
                             os.system(cram2fastq)
