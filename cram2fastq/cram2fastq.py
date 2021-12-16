@@ -39,7 +39,7 @@ def parse_args():
                         help=('bsub queue. Only works if --bsub is passed.'))
     parser.add_argument('--ncpu',
                         type=int,
-                        default=4,
+                        default=1,
                         help=('bsub ncpu. Only works if --bsub is passed.'))
     parser.add_argument('--mem',
                         type=str,
