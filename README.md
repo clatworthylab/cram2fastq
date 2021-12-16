@@ -31,7 +31,7 @@ source ~/.bashrc
 
 ## Instructions
 ```bash
-usage: cram2fastq.py [-h] [--meta META] [--study STUDY] [--outpath OUTPATH] [--bulk] [--bsub] [--queue QUEUE] [--ncpu NCPU] [--mem MEM] [--dryrun]
+usage: cram2fastq.py [-h] [--meta META] [--study STUDY] [--outpath OUTPATH] [--bulk] [--bsub] [--DNAP] [--queue QUEUE] [--ncpu NCPU] [--mem MEM] [--dryrun]
 
 optional arguments:
   -h, --help         show this help message and exit
