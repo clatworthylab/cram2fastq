@@ -31,7 +31,7 @@ def parse_args():
         action='store_true',
         help=('If passed, assume file is bulk data rather than 10x data.'))
     parser.add_argument(
-        '--dnap',
+        '--DNAP',
         action='store_true',
         help=
         ('If passed, treats samples as created using semiautomated pipeline from DNAP.'
@@ -240,7 +240,7 @@ def main():
                 cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             else:
                 cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
-            if not args.dnap:
+            if not args.DNAP:
                 if args.bsub:
                     create_jobscript(SAMPLE=SAMPLE,
                                      GROUP=GROUP,
@@ -313,7 +313,7 @@ def main():
     print('    --outpath = {OUTPATH}\r'.format(OUTPATH=args.outpath))
     print('    --bulk = {BULK}\r'.format(BULK=args.bulk))
     print('    --bsub = {BSUB}\r'.format(BSUB=args.bsub))
-    print('    --dnap = {DNAP}\r'.format(BSUB=args.dnap))
+    print('    --DNAP = {DNAP}\r'.format(DNAP=args.DNAP))
     if args.bsub:
         print('    --queue = {QUEUE}\r'.format(QUEUE=args.queue))
         print('    --ncpu = {NCPU}\r'.format(NCPU=args.ncpu))
