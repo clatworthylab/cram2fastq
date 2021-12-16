@@ -31,7 +31,7 @@ def parse_args():
         action='store_true',
         help=('If passed, assume file is bulk data rather than 10x data.'))
     parser.add_argument(
-        '--DNAP',
+        '--dnap',
         action='store_true',
         help=
         ('If passed, treats samples as created using semiautomated pipeline from DNAP.'
@@ -313,7 +313,7 @@ def main():
     print('    --outpath = {OUTPATH}\r'.format(OUTPATH=args.outpath))
     print('    --bulk = {BULK}\r'.format(BULK=args.bulk))
     print('    --bsub = {BSUB}\r'.format(BSUB=args.bsub))
-    print('    --DNAP = {DNAP}\r'.format(BSUB=args.DNAP))
+    print('    --dnap = {DNAP}\r'.format(BSUB=args.dnap))
     if args.bsub:
         print('    --queue = {QUEUE}\r'.format(QUEUE=args.queue))
         print('    --ncpu = {NCPU}\r'.format(NCPU=args.ncpu))
