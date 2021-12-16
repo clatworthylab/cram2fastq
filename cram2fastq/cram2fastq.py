@@ -144,6 +144,7 @@ def print_imeta2(samp):
     fh = open('imeta.sh', 'r')
     string_list = fh.readlines()
     fh.close()
+    os.system('rm imeta.sh')
     out_list = []
     for i in string_list:
         if re.search('collection:|dataObj:', i):
@@ -207,7 +208,7 @@ def create_jobscript2(SAMPLE, GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY,
             'cd {OUTPATH}/{FOLDER}\n'.format(OUTPATH=path, FOLDER=f),
             'bash imeta.sh\n',
             'parallel cramfastq.sh ::: *.cram\n',
-            'rename_fastq.py\n',
+            'rename_fastq2.py\n',
             'rm imeta.sh\n',
             'rm bsubjob.sh\n',
         ]
