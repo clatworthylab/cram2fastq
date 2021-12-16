@@ -172,17 +172,13 @@ def print_imeta2(samp):
         ]
         ser = pd.Series(dict(zip(attr, val)))
         libtype.append(ser.loc['library_type'])
-    if len(list(set(libtype))) == 1:
-        print_imeta(samp)
-    else:
-        for dataObj, libt in zip(dataObj_list,
-                                 [re.sub(' ', '_', x) for x in libtype]):
-            if not os.path.exists(libt):
-                os.makedirs(libt)
-            os.system(
-                'printf "#!/bin/bash\\nset -e\\n\\\niget -K {dataObj}" > '.
-                format(dataObj=dataObj) + libt + '/imeta.sh')
-            os.system('sed "/.fastq.gz/d" -i ' + libt + '/imeta.sh')
+    for dataObj, libt in zip(dataObj_list,
+                             [re.sub(' ', '_', x) for x in libtype]):
+        if not os.path.exists(libt):
+            os.makedirs(libt)
+        os.system('printf "#!/bin/bash\\nset -e\\n\\\niget -K {dataObj}" > '.
+                  format(dataObj=dataObj) + libt + '/imeta.sh')
+        os.system('sed "/.fastq.gz/d" -i ' + libt + '/imeta.sh')
 
 
 def create_jobscript2(SAMPLE, GROUP, PRIORITY, JOB, QUEUE, LOGPATH, MEMORY,
