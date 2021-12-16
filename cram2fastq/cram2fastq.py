@@ -240,7 +240,7 @@ def main():
                 cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             else:
                 cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
-            if not args.DNAP:
+            if not args.dnap:
                 if args.bsub:
                     create_jobscript(SAMPLE=SAMPLE,
                                      GROUP=GROUP,
