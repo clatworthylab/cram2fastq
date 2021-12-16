@@ -234,9 +234,15 @@ def main():
             os.chdir(cram_path)
             cwd = os.getcwd()
             if args.bulk:
-                cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
+                if args.DNAP:
+                    cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq2.py; rm imeta.sh;'
+                else:
+                    cram2fastq = 'bash imeta.sh; parallel cramfastq_bulk.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             else:
-                cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
+                if args.DNAP:
+                    cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq2.py; rm imeta.sh;'
+                else:
+                    cram2fastq = 'bash imeta.sh; parallel cramfastq.sh ::: *.cram; rename_fastq.py; rm imeta.sh;'
             if not args.DNAP:
                 if args.bsub:
                     create_jobscript(SAMPLE=SAMPLE,
