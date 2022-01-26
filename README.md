@@ -25,7 +25,7 @@ export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:
 If setting it up for the first time, just do this once:
 ```bash
 echo 'export PATH=/nfs/team297/kt16/Softwares/samtools-1.11/bin:$PATH' >> ~/.bashrc
-echo 'export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustre/scratch118/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http:://sf2-farm-srv1.internal.sanger.ac.uk::8000/%s' >> ~/.bashrc
+echo 'export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustre/scratch118/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http:://refcache.dnapipelines.sanger.ac.uk::8000/%s' >> ~/.bashrc
 source ~/.bashrc
 ````
 
