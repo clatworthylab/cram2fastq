@@ -19,7 +19,7 @@ export PATH=/nfs/team297/kt16/Softwares/samtools-1.11/bin:$PATH
 
 2) `REF_PATH` is set as well. If not:
 ```bash
-export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustre/scratch118/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http:://sf2-farm-srv1.internal.sanger.ac.uk::8000/%s
+export REF_PATH=/lustre/scratch117/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustre/scratch118/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http:://refcache.dnapipelines.sanger.ac.uk::8000/%s
 ```
 
 If setting it up for the first time, just do this once:
