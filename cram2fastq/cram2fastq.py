@@ -64,7 +64,7 @@ def print_imeta(samp):
     """Create an imeta.sh file to download the files from irods."""
     os.system('printf "#!/bin/bash\\nset -e\\n\\\n" > imeta.sh')
     os.system(
-        'imeta qu -z seq -d sample = {SAMPLE} and target = 1 and manual_qc = 1 >> imeta.sh'
+        'imeta qu -z seq -d sample = {SAMPLE} and target = 1 >> imeta.sh'
         .format(SAMPLE=samp))
     fh = open('imeta.sh', 'r')
     string_list = fh.readlines()
@@ -139,7 +139,7 @@ def print_imeta2(samp):
     """Create an imeta.sh file to download the files from irods."""
     os.system('printf "#!/bin/bash\\nset -e\\n\\\n" > imeta.sh')
     os.system(
-        'imeta qu -z seq -d sample = {SAMPLE} and target = 1 and manual_qc = 1 >> imeta.sh'
+        'imeta qu -z seq -d sample = {SAMPLE} and target = 1 >> imeta.sh'
         .format(SAMPLE=samp))
     fh = open('imeta.sh', 'r')
     string_list = fh.readlines()
