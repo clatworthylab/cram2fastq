@@ -7,7 +7,7 @@ with open("requirements.txt", "rt", encoding="utf-8") as fh:
     requirements = [line.strip() for line in fh.readlines()]
 
 setup(name="cram2fastq",
-      version='0.0.4',
+      version='0.0.5',
       author="zktuong",
       author_email="kt16@sanger.ac.uk",
       description="Download and convert cram-to-fastq from irods.",
